@@ -1,5 +1,5 @@
 .container{
-    height: 100px;
+    height: 120px;
     width: 100%;
     border: 1px solid #000000;
     border-radius: 10px;
@@ -7,5 +7,18 @@
     align-items: center;
     .title{
         margin-bottom: 0;
+    }
+    .row{
+        display: flex;
+        .block{
+            margin: 1px;
+            height: 13px;
+            width: 13px;
+            border: 1px solid #000000;
+            border-radius: 3px;
+            &.done{
+                background-color: #000000;
+            }
+        }
     }
 }
