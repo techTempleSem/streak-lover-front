@@ -1,24 +1,31 @@
 .container{
-    height: 120px;
-    width: 100%;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
+    max-width: fit-content;
+    margin: auto;
     .title{
         margin-bottom: 0;
     }
-    .row{
-        display: flex;
-        .block{
-            margin: 1px;
-            height: 13px;
-            width: 13px;
-            border: 1px solid #000000;
-            border-radius: 3px;
-            &.done{
-                background-color: #000000;
+    .streak{
+        width: 100%;
+        direction: rtl;
+        overflow: auto;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE 및 Edge */
+        .baseRow{
+            .row{
+                display: flex;
+                direction: ltr;
+                .block{
+                    flex: 0 0 auto;
+                    border: 1px solid #000000;
+                    border-radius: 3px;
+                    &.done{
+                        background-color: #000000;
+                    }
+                }
             }
         }
+    }
+    .streak::-webkit-scrollbar {
+        display: none;
     }
 }
