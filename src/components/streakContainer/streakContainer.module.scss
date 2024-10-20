@@ -1,31 +1,32 @@
 .container{
     max-width: fit-content;
     margin: auto;
-    .title{
-        margin-bottom: 0;
-    }
-    .streak{
-        width: 100%;
-        direction: rtl;
-        overflow: auto;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE 및 Edge */
-        .baseRow{
-            .row{
-                display: flex;
-                direction: ltr;
-                .block{
-                    flex: 0 0 auto;
-                    border: 1px solid #000000;
-                    border-radius: 3px;
-                    &.done{
-                        background-color: #000000;
+    .streakBox{
+        display: flex;
+        align-items: center;
+        .streak{
+            width: 100%;
+            direction: rtl;
+            overflow: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE 및 Edge */
+            .baseRow{
+                .row{
+                    display: flex;
+                    direction: ltr;
+                    .block{
+                        flex: 0 0 auto;
+                        border: 1px solid #000000;
+                        border-radius: 3px;
+                        &.done{
+                            background-color: #000000;
+                        }
                     }
                 }
             }
         }
-    }
-    .streak::-webkit-scrollbar {
-        display: none;
+        .streak::-webkit-scrollbar {
+            display: none;
+        }
     }
 }

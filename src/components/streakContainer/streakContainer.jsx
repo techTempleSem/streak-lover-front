@@ -1,5 +1,6 @@
-import { Card } from "react-bootstrap"
+import { Button, Card } from "react-bootstrap"
 import style from "./streakContainer.module.scss"
+import axios from "axios";
 
 const height = 7
 const width = 50
@@ -43,14 +44,22 @@ function draw(){
   return blocks;
 }
 
+async function extendStreak(){
+  // const data = await axios.get('http://localhost:8080/api/work/extend')
+  // console.log(data);
+}
+
 function StreakContainer({title, id}) {
   streakId = id
   return (
     <Card className={`${style.container} text-center`}>
       <Card.Header>{title}</Card.Header>
       <Card.Body>
-        <div className={style.streak}>
-          {draw()}
+        <div className={style.streakBox}>
+          <div className={style.streak}>
+            {draw()}
+          </div>
+          <Button variant="primary" onClick={extendStreak}>연장</Button>
         </div>
       </Card.Body>
     </Card>

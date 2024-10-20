@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import StreakContainer from "../../components/streakContainer/streakContainer";
-import style from "./streak.module.scss"
+import style from "./streakDetail.module.scss"
 import axios from "axios";
 
-function Streak() {
+function StreakDetail() {
   const [works, setWorks] = useState([]);
 
   useEffect(() => {
@@ -27,4 +27,4 @@ function Streak() {
   );
 }
 
-export default Streak;
+export default StreakDetail;
