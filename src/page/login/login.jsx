@@ -4,6 +4,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../App";
+import style from "./login.module.scss"
 
 function Login() {
   const {isLogin, setIsLogin} = useAuth();
@@ -26,12 +27,12 @@ function Login() {
   };
 
   return (
-    <Container>
+    <Container className={style.loginContext}>
       <Row className="justify-content-md-center">
         <Col md={6}>
           <h2 className="text-center">로그인</h2>
           <Form onSubmit={login}>
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group controlId="formBasicEmail" className={style.form}>
               <Form.Label>이메일</Form.Label>
               <Form.Control
                 type="email"
@@ -42,7 +43,7 @@ function Login() {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group controlId="formBasicPassword" className={style.form}>
               <Form.Label>비밀번호</Form.Label>
               <Form.Control
                 type="password"

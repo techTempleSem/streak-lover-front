@@ -23,6 +23,7 @@ function StreakMain() {
     const getWork = async ()=>{
       const data = await axios.get('http://localhost:8080/api/user/work')
       setWorks(data.data);
+      console.log(data.data)
     }
     getWork()
   }, [])
@@ -49,6 +50,7 @@ function StreakMain() {
               taskName={work.name}
               streakDays={work.cur_streak}
               lastUpdatedAt={work.last_updated_at}
+              workId={work.id}
               onExtend={() => extend(work.order_num)}
             />
           </Col>

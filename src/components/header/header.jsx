@@ -30,7 +30,7 @@ function Header() {
   }
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary" sticky="top">
+    <Navbar expand="lg" className={`bg-body-tertiary ${style.headerContext}`} sticky="top">
       <Container>
         <Navbar.Brand href="/">Streak-Lover</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

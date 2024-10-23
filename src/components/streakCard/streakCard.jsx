@@ -4,7 +4,7 @@ import axios from "axios";
 import { FaFire } from "react-icons/fa";
 import { CircularProgressbar } from "react-circular-progressbar";
 
-function StreakCard({ taskName, streakDays, lastUpdatedAt, onExtend }) {
+function StreakCard({ taskName, streakDays, lastUpdatedAt, onExtend, workId }) {
   function isToday(date) {
     date = new Date(date)
     const today = new Date();

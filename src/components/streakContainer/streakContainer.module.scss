@@ -1,32 +1,43 @@
-.container{
-    max-width: fit-content;
-    margin: auto;
-    .streakBox{
+.container {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .streakBox {
+    display: flex;
+    direction: rtl;
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 및 Edge */
+  }
+  
+  .streak {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+  }
+  
+  .baseRow {
+    display: flex;
+    flex-direction: column;
+    .row{
         display: flex;
-        align-items: center;
-        .streak{
-            width: 100%;
-            direction: rtl;
-            overflow: auto;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE 및 Edge */
-            .baseRow{
-                .row{
-                    display: flex;
-                    direction: ltr;
-                    .block{
-                        flex: 0 0 auto;
-                        border: 1px solid #000000;
-                        border-radius: 3px;
-                        &.done{
-                            background-color: #000000;
-                        }
-                    }
-                }
-            }
-        }
-        .streak::-webkit-scrollbar {
-            display: none;
-        }
+        flex-direction: row-reverse;
     }
-}
+  }
+  
+  .block {
+    margin: 2px;
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .block:hover {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  }
+  

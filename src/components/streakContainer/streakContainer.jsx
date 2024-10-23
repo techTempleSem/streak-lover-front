@@ -1,74 +1,82 @@
-import { Button, Card } from "react-bootstrap"
-import style from "./streakContainer.module.scss"
-import axios from "axios";
+import { useState, useEffect } from "react";
+import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
+import style from "./streakContainer.module.scss";
 
-const height = 7
-const width = 50
-const week = (new Date()).getDay()
+const height = 7;  // 7 days in a week
+const width = 50;  // number of weeks
 
-const blockSize = 13
-const blockMargin = 1
+const blockSize = 13; 
+const blockMargin = 2;  
 const contentWidth = (blockSize + blockMargin * 2) * width;
-let streakId = 0
+
+const colors = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"];  // GitHub-like colors
 
 const buttonStyle = {
   margin: `${blockMargin}px`,
   height: `${blockSize}px`,
   width: `${blockSize}px`,
+  borderRadius: "3px",
 };
 
-const baseRow = {
-  width: `${contentWidth}px`,
-};
+function getDayBlocks(rowNum, streakData) {
+  const blocks = [];
+  for (let i = 0; i < width; i++) {
+    const dayIndex = (width - i - 1) * 7 + rowNum;
+    const contributionLevel = streakData[dayIndex]?.level || 0; // mock contribution level
 
-function row(rowNum){
-  const blocks = []
-  for(let i=0;i<width;i++){
-    if(i + 1 == width && rowNum > week) break;
-    const today = (width - i - 1) * 7 + week - rowNum
-    const isDone = (today == 1)
-    blocks.push(<div style={buttonStyle} className={`${style.block} ${streakId == 1 && isDone ? style.done : ''}`}></div>)
+    blocks.push(
+      <OverlayTrigger
+        key={i}
+        placement="top"
+        overlay={<Tooltip>{`Contributions: ${contributionLevel}`}</Tooltip>}
+      >
+        <div
+          style={{
+            backgroundColor: colors[contributionLevel],
+          }}
+          className={`${style.block}`}
+        ></div>
+      </OverlayTrigger>
+    );
   }
   return blocks;
 }
 
-function draw(){
-  const blocks = []
-  for(let i=0;i<height;i++){
-    blocks.push((
-      <div style={baseRow} className={style.baseRow} key={`row+${i}`}>
-        <div className={style.row}>{row(i)}</div>
+function getWeekRows(streakData) {
+  const rows = [];
+  for (let i = 0; i < height; i++) {
+    rows.push(
+      <div className={style.baseRow} key={`row-${i}`}>
+        <div className={style.row}>{getDayBlocks(i, streakData)}</div>
       </div>
-    ))
+    );
   }
-  return blocks;
+  return rows;
 }
 
-async function extendStreak(){
-  // const data = await axios.get('http://localhost:8080/api/work/extend')
-  // console.log(data);
-}
+function StreakContainer({ streak }) {
+  const [streakData, setStreakData] = useState([]);
 
-function StreakContainer({title, id}) {
-  streakId = id
+  useEffect(() => {
+    // Mock fetch data
+    const mockData = new Array(350).fill(0).map((_, idx) => ({
+      day: idx,
+      level: Math.floor(0),  // Random contribution levels
+    }));
+    mockData[1].level = 1;
+    setStreakData(mockData);
+  }, []);
+
   return (
     <Card className={`${style.container} text-center`}>
-      <Card.Header>{title}</Card.Header>
       <Card.Body>
         <div className={style.streakBox}>
           <div className={style.streak}>
-            {draw()}
+            {getWeekRows(streakData)}
           </div>
-          <Button variant="primary" onClick={extendStreak}>연장</Button>
         </div>
       </Card.Body>
     </Card>
-    // <div class={style.container}>
-    //   <p className={style.title}>{title}</p>
-    //   <div className={style.streak}>
-    //     {draw()}
-    //   </div>
-    // </div>
   );
 }
 

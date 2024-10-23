@@ -36,7 +36,7 @@ function Register() {
     <Container className={style.content}>
       <Row className="justify-content-md-center">
         <Col md={6}>
-          <h2 className="text-center">로그인</h2>
+          <h2 className="text-center">회원가입</h2>
           <Form onSubmit={login}>
             <Form.Group controlId="formBasicEmail" className={style.form}>
               <Form.Label>이메일</Form.Label>

@@ -1,0 +1,29 @@
+.streakDetail {
+    font-family: din-round;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centering title and button */
+    .title {
+        font-size: 2.2em;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    .createdTime {
+        font-size: 0.9em;
+        color: #7d7d7d;
+        margin-bottom: 25px;
+    }
+    .extendButton {
+        margin-top: 30px;
+        padding: 10px 20px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+}
