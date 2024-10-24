@@ -5,21 +5,14 @@ import style from "./streakContainer.module.scss";
 const height = 7;  // 7 days in a week
 const width = 50;  // number of weeks
 
-const blockSize = 13; 
-const blockMargin = 2;  
-const contentWidth = (blockSize + blockMargin * 2) * width;
+let marginDay = 0;
 
 const colors = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"];  // GitHub-like colors
 
-const buttonStyle = {
-  margin: `${blockMargin}px`,
-  height: `${blockSize}px`,
-  width: `${blockSize}px`,
-  borderRadius: "3px",
-};
-
 function getDayBlocks(rowNum, streakData) {
   const blocks = [];
+  let show = 1;
+  if(rowNum < 6 - new Date().getDay()) show = 0;
   for (let i = 0; i < width; i++) {
     const dayIndex = (width - i - 1) * 7 + rowNum;
     const contributionLevel = streakData[dayIndex]?.level || 0; // mock contribution level
@@ -34,7 +27,7 @@ function getDayBlocks(rowNum, streakData) {
           style={{
             backgroundColor: colors[contributionLevel],
           }}
-          className={`${style.block}`}
+          className={`${style.block} ${show == 0 && i == width - 1 ? style.none : style.display}`}
         ></div>
       </OverlayTrigger>
     );
@@ -54,22 +47,48 @@ function getWeekRows(streakData) {
   return rows;
 }
 
-function StreakContainer({ streak }) {
+function StreakContainer({ streaks }) {
+
   const [streakData, setStreakData] = useState([]);
 
   useEffect(() => {
-    // Mock fetch data
-    const mockData = new Array(350).fill(0).map((_, idx) => ({
+    const today = new Date();
+    marginDay = 6 - today.getDay();
+    console.log(streaks)
+    const streakData = new Array(350).fill(0).map((_, idx) => ({
       day: idx,
       level: Math.floor(0),  // Random contribution levels
     }));
-    mockData[1].level = 1;
-    setStreakData(mockData);
-  }, []);
+
+    if(!streaks) {
+      return;
+    }
+
+    for(let streak of streaks){
+      let fr = 1, day = 1;
+      let year = Math.floor(streak.month / 100)
+      let month = streak.month % 100
+      while(1){
+        if(fr > streak.check_num) {
+          break;
+        }
+        if((fr & streak.check_num) != 0){
+          let targetDate = new Date(`${year}.${month}.${day}`)
+          let pos = Math.floor((new Date() - targetDate) / (1000*60*60*24))
+          console.log(targetDate, pos);
+          streakData[marginDay + pos].level = 1
+        }
+        day++;
+        fr *= 2;
+      }
+    }
+
+    setStreakData(streakData);
+  }, [streaks]);
 
   return (
     <Card className={`${style.container} text-center`}>
-      <Card.Body>
+      <Card.Body className={style.realContainer}>
         <div className={style.streakBox}>
           <div className={style.streak}>
             {getWeekRows(streakData)}

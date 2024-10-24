@@ -23,14 +23,13 @@ function StreakMain() {
     const getWork = async ()=>{
       const data = await axios.get('http://localhost:8080/api/user/work')
       setWorks(data.data);
-      console.log(data.data)
     }
     getWork()
   }, [])
 
   async function extend(id){
     const data = await axios.post('http://localhost:8080/api/work/extend',{
-      "order": id
+      "id": id
     })
     setWorks(data.data);
   }

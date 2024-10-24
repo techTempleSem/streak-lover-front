@@ -12,7 +12,22 @@
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE 및 Edge */
   }
-  
+
+  .realContainer{
+    position: relative;
+  }
+ 
+  .realContainer::before {
+    content: '';
+    position: absolute;
+    top: var(--bs-card-spacer-y);
+    left: var(--bs-card-spacer-x);
+    width: 20px;  /* 그림자가 적용될 영역의 너비 */
+    height: calc(100% - var(--bs-card-spacer-y) * 2);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.2), transparent); /* 왼쪽에서 오른쪽으로 흐려지는 그림자 */
+    z-index: 1;  /* streak 그래프 위에 나타나도록 설정 */
+  }
+
   .streak {
     display: flex;
     flex-direction: column-reverse;
@@ -35,6 +50,9 @@
     border-radius: 2px;
     cursor: pointer;
     transition: background-color 0.3s;
+    &.none{
+      display: none;
+    }
   }
   
   .block:hover {

@@ -3,8 +3,11 @@ import style from "./streakCard.module.scss"
 import axios from "axios";
 import { FaFire } from "react-icons/fa";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { useNavigate } from "react-router-dom";
 
 function StreakCard({ taskName, streakDays, lastUpdatedAt, onExtend, workId }) {
+  const navigate = useNavigate();
+
   function isToday(date) {
     date = new Date(date)
     const today = new Date();
@@ -32,7 +35,9 @@ function StreakCard({ taskName, streakDays, lastUpdatedAt, onExtend, workId }) {
            date.getDate() === yesterday.getDate();
   }
 
-  console.log(lastUpdatedAt)
+  function toDetail(){
+    navigate(`/streak/${workId}`);
+  }
 
   if(!isToday(lastUpdatedAt) && !isYesterday(lastUpdatedAt)) {
     streakDays = 0;
@@ -40,8 +45,8 @@ function StreakCard({ taskName, streakDays, lastUpdatedAt, onExtend, workId }) {
 
   return (
     <Card className={`text-center mb-4 ${style.card}`}>
-      <Card.Header>{taskName}</Card.Header>
-      <Card.Body>
+      <Card.Header onClick={toDetail} className={style.header}>{taskName}</Card.Header>
+      <Card.Body onClick={toDetail} className={style.body}>
         <FaFire color="orange" size={30} className="mt-2" />
         <Card.Text className={`mt-3 ${style.day}`}>
           {streakDays}일 연속

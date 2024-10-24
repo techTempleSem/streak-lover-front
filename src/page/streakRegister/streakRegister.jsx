@@ -26,8 +26,9 @@ const StreakRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ title, description, selectedDays });
-    const data = await axios.post('http://localhost:8080/api/work/register')
-    console.log(data)
+    const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selectedDays })
+    alert("성공적으로 등록되었습니다!")
+    navigate("/");
   };
 
   return (
