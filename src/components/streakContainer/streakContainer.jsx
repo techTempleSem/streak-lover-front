@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import style from "./streakContainer.module.scss";
+import { useRef } from "react";
 
 const height = 7;  // 7 days in a week
 const width = 50;  // number of weeks
@@ -48,8 +49,36 @@ function getWeekRows(streakData) {
 }
 
 function StreakContainer({ streaks }) {
-
   const [streakData, setStreakData] = useState([]);
+  const [isLeft, setIsLeft] = useState(true);
+  const scrollContainerRef = useRef(null);
+
+  function checkIfLeft() {
+    if (scrollContainerRef.current) {
+      console.log("!!!")
+      console.log(scrollContainerRef.current.clientWidth)
+      setIsLeft(scrollContainerRef.current.clientWidth-scrollContainerRef.current.scrollLeft === scrollContainerRef.current.scrollWidth);
+    }
+  }
+
+  useEffect(() => {
+    // 스크롤 이벤트 핸들러
+    const handleScroll = checkIfLeft;
+    const handleResize  = checkIfLeft;
+
+    setIsLeft(scrollContainerRef.current.clientWidth-scrollContainerRef.current.scrollLeft === scrollContainerRef.current.scrollWidth);
+    console.log(scrollContainerRef.current.clientWidth-scrollContainerRef.current.scrollLeft === scrollContainerRef.current.scrollWidth)
+    // 스크롤 이벤트 등록
+    const container = scrollContainerRef.current;
+    container?.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+
+    // 컴포넌트 언마운트 시 이벤트 제거
+    return () => {
+      container?.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   useEffect(() => {
     const today = new Date();
@@ -88,8 +117,8 @@ function StreakContainer({ streaks }) {
 
   return (
     <Card className={`${style.container} text-center`}>
-      <Card.Body className={style.realContainer}>
-        <div className={style.streakBox}>
+      <Card.Body className={`${style.realContainer} ${!isLeft ? style.isDim : ''}`}>
+        <div className={style.streakBox} ref={scrollContainerRef}>
           <div className={style.streak}>
             {getWeekRows(streakData)}
           </div>

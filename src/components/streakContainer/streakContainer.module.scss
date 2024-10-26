@@ -17,7 +17,7 @@
     position: relative;
   }
  
-  .realContainer::before {
+  .isDim::before {
     content: '';
     position: absolute;
     top: var(--bs-card-spacer-y);
@@ -32,6 +32,7 @@
     display: flex;
     flex-direction: column-reverse;
     flex-wrap: nowrap;
+    margin: auto;
   }
   
   .baseRow {
