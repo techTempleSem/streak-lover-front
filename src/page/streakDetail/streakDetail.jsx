@@ -2,37 +2,30 @@ import { useEffect, useState } from "react";
 import StreakContainer from "../../components/streakContainer/streakContainer";
 import style from "./streakDetail.module.scss"
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { Button, Container } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, ButtonGroup, Container } from "react-bootstrap";
+import { calcStreak, isExpend } from "utils";
+import { useAuth } from "App";
 
 function StreakDetail() {
   const [work, setWorks] = useState(null);
   const {id} = useParams();
-
-  function isToday(date) {
-    date = new Date(date)
-    const today = new Date();
-    
-    const todayYear = today.getFullYear();
-    const todayMonth = today.getMonth();
-    const todayDate = today.getDate();
-  
-    const givenYear = date.getFullYear();
-    const givenMonth = date.getMonth();
-    const givenDate = date.getDate();
-  
-    return todayYear === givenYear && todayMonth === givenMonth && todayDate === givenDate;
-  }
+  const {isLogin} = useAuth();
+  const navigate = useNavigate();
 
   async function getWork (id){
     const data = await axios.get(`http://localhost:8080/api/work/${id}`)
+    if(data.data.state == "DELETE") {
+      alert("삭제된 일입니다!");
+      navigate("/");
+    }
+    console.log(data.data)
     setWorks({
       ...data.data,
     })
   }
 
   useEffect(() => {
-    console.log(id)
     getWork(id)
   },[]);
 
@@ -48,15 +41,31 @@ function StreakDetail() {
     }
   }
 
+  async function deleteStreak(){
+    try{
+      const data = await axios.post('http://localhost:8080/api/work/delete',{
+        "id" : parseInt(id)
+      })
+      alert("삭제되었습니다")
+      navigate("/")
+    } catch(e){
+      console.log(e);
+    }
+  }
+
   return (
     <Container className={style.streakDetail}>
       {work ? (
         <>
           <div className={style.title}>{work.name}</div>
           <div className={style.createdTime}>created time : {work.created_at}</div>
+          <div className={style.streakCount}>🔥 {calcStreak(work.last_updated_at, work.cur_streak, work.day_week)}일 연속</div>
 
-          <StreakContainer streaks={work.streak}></StreakContainer>
-          <Button className={style.extendButton} variant="primary" onClick={extendStreak} disabled={isToday(work.last_updated_at)}>연장</Button>
+          <StreakContainer streaks={work.streak} dayWeek={work.day_week}></StreakContainer>
+          <ButtonGroup aria-label="Basic example">
+            <Button className={style.extendButton} variant="primary" onClick={extendStreak} disabled={!isExpend(work.last_updated_at, work.day_week)}>연장</Button>
+            <Button className={style.extendButton} variant="danger" onClick={deleteStreak}>삭제</Button>
+          </ButtonGroup>
         </>
       ) : (
         <>

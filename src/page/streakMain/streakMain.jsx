@@ -22,6 +22,7 @@ function StreakMain() {
   useEffect(() => {
     const getWork = async ()=>{
       const data = await axios.get('http://localhost:8080/api/user/work')
+      console.log(data.data)
       setWorks(data.data);
     }
     getWork()
@@ -50,7 +51,8 @@ function StreakMain() {
               streakDays={work.cur_streak}
               lastUpdatedAt={work.last_updated_at}
               workId={work.id}
-              onExtend={() => extend(work.order_num)}
+              dayWeek={work.day_week}
+              onExtend={() => extend(work.id)}
             />
           </Col>
         ))}

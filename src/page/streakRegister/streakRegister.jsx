@@ -57,7 +57,7 @@ const StreakRegister = () => {
 
         <label>스트릭 연장 요일:</label>
         <div className={style.checkboxGroup}>
-          {["월","화","수","목","금","토","일"].map((day, idx) => (
+          {["일","월","화","수","목","금","토"].map((day, idx) => (
             <label key={idx} className={style.checkboxLabel}>
               <input
                 type="checkbox"

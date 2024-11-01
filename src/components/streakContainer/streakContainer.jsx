@@ -36,27 +36,27 @@ function getDayBlocks(rowNum, streakData) {
   return blocks;
 }
 
-function getWeekRows(streakData) {
+function getWeekRows(streakData, dayWeek) {
   const rows = [];
+  let fr = 64;
   for (let i = 0; i < height; i++) {
     rows.push(
       <div className={style.baseRow} key={`row-${i}`}>
-        <div className={style.row}>{getDayBlocks(i, streakData)}</div>
+        <div className={`${style.row} ${(dayWeek & fr) != 0 ? style.light : ''}`}>{getDayBlocks(i, streakData)}</div>
       </div>
     );
+    fr /= 2;
   }
   return rows;
 }
 
-function StreakContainer({ streaks }) {
+function StreakContainer({ streaks, dayWeek }) {
   const [streakData, setStreakData] = useState([]);
   const [isLeft, setIsLeft] = useState(true);
   const scrollContainerRef = useRef(null);
 
   function checkIfLeft() {
     if (scrollContainerRef.current) {
-      console.log("!!!")
-      console.log(scrollContainerRef.current.clientWidth)
       setIsLeft(scrollContainerRef.current.clientWidth-scrollContainerRef.current.scrollLeft === scrollContainerRef.current.scrollWidth);
     }
   }
@@ -120,7 +120,7 @@ function StreakContainer({ streaks }) {
       <Card.Body className={`${style.realContainer} ${!isLeft ? style.isDim : ''}`}>
         <div className={style.streakBox} ref={scrollContainerRef}>
           <div className={style.streak}>
-            {getWeekRows(streakData)}
+            {getWeekRows(streakData, dayWeek)}
           </div>
         </div>
       </Card.Body>

@@ -20,7 +20,6 @@ function App() {
   useEffect(() => {
     const user = async () => {
       const data = await axios.get('http://localhost:8080/api/user/user')
-      console.log(data)
       setIsLogin(data.data.name ?? "");
     }
     user();

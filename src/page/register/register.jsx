@@ -9,6 +9,7 @@ import style from "./register.module.scss"
 function Register() {
   const {isLogin, setIsLogin} = useAuth();
   const [email, setEmail] = useState('');
+  const [emailCheck, setEmailCheck] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const navigate = useNavigate();
@@ -32,6 +33,21 @@ function Register() {
     }
   };
 
+  async function getCode(){
+    const data = await axios.post('http://localhost:8080/open-api/mail/register',{
+      "email" : email,
+      "type" : "email"
+    })
+  }
+
+  async function getAuth(){
+    const data = await axios.post('http://localhost:8080/open-api/mail/auth',{
+      "email" : email,
+      "code" : emailCheck
+    })
+    alert(data.data);
+  }
+
   return (
     <Container className={style.content}>
       <Row className="justify-content-md-center">
@@ -48,6 +64,24 @@ function Register() {
                 required
               />
             </Form.Group>
+
+            <Button variant="warning" className={`w-100 ${style.auth}`} onClick={getCode}>
+              인증 코드 받기
+            </Button>
+
+            <Form.Group controlId="formBasicEmailCheck" className={style.form}>
+              <Form.Label>이메일 인증</Form.Label>
+              <Form.Control
+                placeholder="인증 코드를 입력하세요"
+                value={emailCheck}
+                onChange={(e) => setEmailCheck(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Button variant="success" className={`w-100 ${style.auth}`} onClick={getAuth}>
+              인증 하기
+            </Button>
 
             <Form.Group controlId="formBasicPassword" className={style.form}>
               <Form.Label>비밀번호</Form.Label>

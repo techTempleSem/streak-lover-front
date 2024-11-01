@@ -4,44 +4,16 @@ import axios from "axios";
 import { FaFire } from "react-icons/fa";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { useNavigate } from "react-router-dom";
+import { calcStreak, isExpend, isToday, isYesterday } from "utils";
 
-function StreakCard({ taskName, streakDays, lastUpdatedAt, onExtend, workId }) {
+function StreakCard({ taskName, streakDays, lastUpdatedAt, onExtend, workId, dayWeek }) {
   const navigate = useNavigate();
-
-  function isToday(date) {
-    date = new Date(date)
-    const today = new Date();
-    
-    const todayYear = today.getFullYear();
-    const todayMonth = today.getMonth();
-    const todayDate = today.getDate();
-  
-    const givenYear = date.getFullYear();
-    const givenMonth = date.getMonth();
-    const givenDate = date.getDate();
-  
-    return todayYear === givenYear && todayMonth === givenMonth && todayDate === givenDate;
-  }
-
-  function isYesterday(inputDate) {
-    const date = new Date(inputDate);
-  
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-  
-    // 입력한 날짜와 어제 날짜를 비교 (연도, 월, 일만 비교)
-    return date.getFullYear() === yesterday.getFullYear() &&
-           date.getMonth() === yesterday.getMonth() &&
-           date.getDate() === yesterday.getDate();
-  }
 
   function toDetail(){
     navigate(`/streak/${workId}`);
   }
 
-  if(!isToday(lastUpdatedAt) && !isYesterday(lastUpdatedAt)) {
-    streakDays = 0;
-  }
+  streakDays = calcStreak(lastUpdatedAt, streakDays, dayWeek);
 
   return (
     <Card className={`text-center mb-4 ${style.card}`}>
@@ -53,9 +25,9 @@ function StreakCard({ taskName, streakDays, lastUpdatedAt, onExtend, workId }) {
         </Card.Text>
       </Card.Body>
       {
-        isToday(lastUpdatedAt) ? 
+        !isExpend(lastUpdatedAt, dayWeek) ? 
         <Card.Footer 
-          className="bg-secondary text-white text-center"
+          className={`bg-secondary text-white text-center`}
         >
           연장 완료
         </Card.Footer> : 
