@@ -27,6 +27,7 @@ function Header() {
     alert("로그아웃 되었습니다!")
     setIsLogin("");
     navigate("/");
+    window.location.reload();
   }
 
   return (

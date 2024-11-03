@@ -38,6 +38,7 @@ function Register() {
       "email" : email,
       "type" : "email"
     })
+    alert("인증 코드가 전송되었습니다!");
   }
 
   async function getAuth(){
