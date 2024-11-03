@@ -53,6 +53,10 @@ function StreakDetail() {
     }
   }
 
+  async function editStreak(){
+    navigate(`/streak-edit/${id}`);
+  }
+
   async function deleteStreak(){
     try{
       const data = await axios.post('http://localhost:8080/api/work/delete',{
@@ -77,6 +81,7 @@ function StreakDetail() {
           <StreakContainer streaks={work.streak} dayWeek={work.day_week}></StreakContainer>
           <ButtonGroup aria-label="Basic example">
             <Button className={style.extendButton} variant="primary" onClick={extendStreak} disabled={!isExpend(work.last_updated_at, work.day_week)}>연장</Button>
+            <Button className={style.extendButton} variant="warning" onClick={editStreak}>수정</Button>
             <Button className={style.extendButton} variant="danger" onClick={deleteStreak}>삭제</Button>
           </ButtonGroup>
         </>

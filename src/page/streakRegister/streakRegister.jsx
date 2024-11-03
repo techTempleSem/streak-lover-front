@@ -1,11 +1,12 @@
 import axios from "axios";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './streakRegister.module.scss';
 import { FaArrowLeft } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const StreakRegister = () => {
   const navigate = useNavigate();
+  const {id} = useParams();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectedDays, setSelectedDays] = useState({
@@ -18,6 +19,55 @@ const StreakRegister = () => {
     "일": true,
   });
 
+  useEffect(() => {
+    console.log(id)
+    let getData = async () => {
+      try{
+        const data = await axios.get(`http://localhost:8080/api/work/${id}`)
+        if(data.data.state == "DELETE") {
+          alert("삭제된 일입니다!");
+          navigate("/");
+        }
+        console.log(data.data)
+        if (data.data === null) {
+          alert("로그인을 해 주세요");
+          navigate("/login");  // 로그인 페이지로 이동
+          return;
+        }
+        console.log(data.data.body)
+
+        let dayWeek = data.data.body.day_week;
+        setTitle(data.data.body.name);
+        setDescription(data.data.body.descript);
+        setSelectedDays({
+          "월": (dayWeek & 2) != 0,
+          "화": (dayWeek & 4) != 0,
+          "수": (dayWeek & 8) != 0,
+          "목": (dayWeek & 16) != 0,
+          "금": (dayWeek & 32) != 0,
+          "토": (dayWeek & 64) != 0,
+          "일": (dayWeek & 1) != 0,
+        })
+      } catch (e){
+        console.error("데이터 가져오기 실패:", e);
+      }
+    }
+    if(id){
+      getData();
+    }
+  },[])
+
+  useEffect(() => {
+    const user = async () => {
+      const data = await axios.get('http://localhost:8080/api/user/user')
+      if(data.data.name == null) {
+        alert("로그인을 진행해 주세요");
+        navigate("/login")
+      }
+    }
+    user();
+  }, [])
+
   const handleDayChange = (e) => {
     const { name, checked } = e.target;
     setSelectedDays({ ...selectedDays, [name]: checked });
@@ -26,8 +76,13 @@ const StreakRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ title, description, selectedDays });
-    const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selectedDays })
-    alert("성공적으로 등록되었습니다!")
+    if(id){
+      const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selected_days: selectedDays, work_num : parseInt(id) })
+      alert("성공적으로 수정되었습니다!")
+    } else {
+      const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selected_days: selectedDays })
+      alert("성공적으로 등록되었습니다!")
+    }
     navigate("/");
   };
 

@@ -36,6 +36,7 @@ function App() {
             <Route path='/' element={<StreakMain/>} />
             <Route path='/register' element={<Register/>} />
             <Route path='/streak-register' element={<StreakRegister/>} />
+            <Route path='/streak-edit/:id' element={<StreakRegister/>} />
           </Routes>
         </Container>
       </LoginContext.Provider>
