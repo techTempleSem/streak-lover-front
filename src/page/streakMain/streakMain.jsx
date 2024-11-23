@@ -22,7 +22,6 @@ function StreakMain() {
   useEffect(() => {
     const getWork = async ()=>{
       const data = await axios.get('http://localhost:8080/api/user/work')
-      console.log(data.data)
       setWorks(data.data);
     }
     getWork()

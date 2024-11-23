@@ -3,8 +3,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import { useAuth } from '../../App';
 import axios from 'axios';
 import { ButtonGroup } from 'react-bootstrap';
@@ -12,7 +12,28 @@ import style from "./header.module.scss"
 
 function Header() {
   const {isLogin, setIsLogin} = useAuth();
+  const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [location]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const navbar = document.querySelector('.navbar-collapse');
+      if (navbar && !navbar.contains(event.target)) {
+        setExpanded(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   function login(){
     navigate("/login");
@@ -31,13 +52,17 @@ function Header() {
   }
 
   return (
-    <Navbar expand="lg" className={`bg-body-tertiary ${style.headerContext}`} sticky="top">
+    <Navbar expand="lg" className={`bg-body-tertiary ${style.headerContext}`} sticky="top"
+    expanded={expanded}
+    onToggle={(isOpen) => setExpanded(isOpen)}
+    >
       <Container>
         <Navbar.Brand href="/">Streak-Lover</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/">Streak</Nav.Link>
+            <Nav.Link href="/">스트릭</Nav.Link>
+            <Nav.Link href="/explanation">설명</Nav.Link>
           </Nav>
           <Navbar.Text>
             {
@@ -50,10 +75,13 @@ function Header() {
                 </ButtonGroup>
                 </>
               ) : (
-                <>
-                  {isLogin}
-                  <Button variant="primary" onClick={logout} className={style.logout}>로그아웃</Button>
-                </>
+                <div className={style.userInfo}>
+                  <p className={style.userName}>{isLogin}</p>
+                  <ButtonGroup aria-label="Basic example" className={style.logedIn}>
+                    <Button variant="primary" onClick={login}>설정</Button>
+                    <Button variant="danger" onClick={logout} className={style.logout}>로그아웃</Button>
+                  </ButtonGroup>
+                </div>
               )
             }
           </Navbar.Text>

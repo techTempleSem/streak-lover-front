@@ -43,11 +43,9 @@ export const calcStreak = (lastUpdatedAt, streakDays, dayWeek) => {
 };
 
 export const isExpend = (lastUpdatedAt, dayWeek) => {
-    console.log(`last : ${lastUpdatedAt}`)
     if(isToday(lastUpdatedAt)) return false;
 
     const date = new Date();
-    console.log(`today : ${date.getDay()} dayWeek : ${dayWeek}`)
     if(date.getDay()==0 && (dayWeek & 1) == 0) return false;
     if(date.getDay()==1 && (dayWeek & 2) == 0) return false;
     if(date.getDay()==2 && (dayWeek & 4) == 0) return false;

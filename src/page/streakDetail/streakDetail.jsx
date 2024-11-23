@@ -69,6 +69,19 @@ function StreakDetail() {
     }
   }
 
+  async function repair(){
+    try{
+      const data = await axios.post('http://localhost:8080/api/work/repair',{
+        "id" : parseInt(id)
+      })
+      console.log(data);
+      alert("스트릭이 수리되었습니다!")
+      getWork(id);
+    } catch(e){
+      console.log(e);
+    }
+  }
+
   return (
     <Container className={style.streakDetail}>
       {work ? (
@@ -77,6 +90,8 @@ function StreakDetail() {
           <div className={style.createdTime}>created time : {work.created_at}</div>
           <p className={style.streakDescription}>{work.descript}</p>
           <div className={style.streakCount}>🔥 {calcStreak(work.last_updated_at, work.cur_streak, work.day_week)}일 연속</div>
+          <div className={style.streakCount}>💰 코인: {work.money}</div>
+          <div className={style.streakCount}>🛠️ 스트릭 리페어: {work.repair}</div>
 
           <StreakContainer streaks={work.streak} dayWeek={work.day_week}></StreakContainer>
           <ButtonGroup aria-label="Basic example">
@@ -84,6 +99,11 @@ function StreakDetail() {
             <Button className={style.extendButton} variant="warning" onClick={editStreak}>수정</Button>
             <Button className={style.extendButton} variant="danger" onClick={deleteStreak}>삭제</Button>
           </ButtonGroup>
+          <div className={style.repairSection}>
+            <button className={style.repairBtn} onClick={repair}>
+              🛠️ 스트릭 리페어 사용
+            </button>
+          </div>
         </>
       ) : (
         <>

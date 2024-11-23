@@ -67,7 +67,6 @@ function StreakContainer({ streaks, dayWeek }) {
     const handleResize  = checkIfLeft;
 
     setIsLeft(scrollContainerRef.current.clientWidth-scrollContainerRef.current.scrollLeft === scrollContainerRef.current.scrollWidth);
-    console.log(scrollContainerRef.current.clientWidth-scrollContainerRef.current.scrollLeft === scrollContainerRef.current.scrollWidth)
     // 스크롤 이벤트 등록
     const container = scrollContainerRef.current;
     container?.addEventListener('scroll', handleScroll);
@@ -83,7 +82,6 @@ function StreakContainer({ streaks, dayWeek }) {
   useEffect(() => {
     const today = new Date();
     marginDay = 6 - today.getDay();
-    console.log(streaks)
     const streakData = new Array(350).fill(0).map((_, idx) => ({
       day: idx,
       level: Math.floor(0),  // Random contribution levels
@@ -104,7 +102,6 @@ function StreakContainer({ streaks, dayWeek }) {
         if((fr & streak.check_num) != 0){
           let targetDate = new Date(`${year}.${month}.${day}`)
           let pos = Math.floor((new Date() - targetDate) / (1000*60*60*24))
-          console.log(targetDate, pos);
           streakData[marginDay + pos].level = 1
         }
         day++;

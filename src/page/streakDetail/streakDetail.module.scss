@@ -44,4 +44,28 @@
         cursor: pointer;
         transition: background-color 0.3s ease;
     }
+    .repairSection{
+        margin-top: 20px;
+        .repairBtn{
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #28a745; /* 초록색 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .repairBtn:hover {
+            background-color: #218838; /* 더 어두운 초록색 */
+            transform: translateY(-2px);
+        }
+        
+        .repairBtn:active {
+            background-color: #1e7e34;
+            transform: translateY(0);
+        }
+    }
 }
