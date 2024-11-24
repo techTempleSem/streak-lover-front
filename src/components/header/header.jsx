@@ -23,6 +23,8 @@ function Header() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       const navbar = document.querySelector('.navbar-collapse');
+      const target = document.querySelector('.navbar-toggler-icon');
+      if(event.target == target) return;
       if (navbar && !navbar.contains(event.target)) {
         setExpanded(false);
       }
@@ -37,6 +39,10 @@ function Header() {
 
   function login(){
     navigate("/login");
+  }
+
+  function setting(){
+    navigate("/setting");
   }
 
   function register(){
@@ -78,7 +84,7 @@ function Header() {
                 <div className={style.userInfo}>
                   <p className={style.userName}>{isLogin}</p>
                   <ButtonGroup aria-label="Basic example" className={style.logedIn}>
-                    <Button variant="primary" onClick={login}>설정</Button>
+                    <Button variant="primary" onClick={setting}>설정</Button>
                     <Button variant="danger" onClick={logout} className={style.logout}>로그아웃</Button>
                   </ButtonGroup>
                 </div>

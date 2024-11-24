@@ -57,6 +57,9 @@ function Login() {
             <Button variant="primary" type="submit" className="w-100 mt-3">
               로그인
             </Button>
+            <div className={style.password}>
+              <a href="/password">비밀번호을 잊었나요?</a>
+            </div>
           </Form>
         </Col>
       </Row>

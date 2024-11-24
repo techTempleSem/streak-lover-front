@@ -82,6 +82,19 @@ function StreakDetail() {
     }
   }
 
+  async function repairBuy(){
+    try{
+      const data = await axios.post('http://localhost:8080/api/work/repair-buy',{
+        "id" : parseInt(id)
+      })
+      console.log(data);
+      alert("구매가 완료되었습니다!")
+      getWork(id);
+    } catch(e){
+      console.log(e);
+    }
+  }
+
   return (
     <Container className={style.streakDetail}>
       {work ? (
@@ -100,8 +113,13 @@ function StreakDetail() {
             <Button className={style.extendButton} variant="danger" onClick={deleteStreak}>삭제</Button>
           </ButtonGroup>
           <div className={style.repairSection}>
-            <button className={style.repairBtn} onClick={repair}>
+            <button className={style.repairBtn} onClick={repair} disabled={work.repair==0}>
               🛠️ 스트릭 리페어 사용
+            </button>
+          </div>
+          <div className={style.repairSection}>
+            <button className={style.repairPurchaseBtn} onClick={repairBuy} disabled={work.money<3000}>
+              💳 스트릭 리페어 구매
             </button>
           </div>
         </>

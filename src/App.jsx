@@ -13,6 +13,8 @@ import StreakRegister from "./page/streakRegister/streakRegister";
 import ExplanationPage from "page/explanationPage/explanationPage";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
+import Setting from "./page/setting/setting";
+import Password from "page/password/password";
 // import { messaging } from './firebase';
 
 const firebaseConfig = {
@@ -84,6 +86,8 @@ function App() {
             <Route path='/streak-register' element={<StreakRegister/>} />
             <Route path='/streak-edit/:id' element={<StreakRegister/>} />
             <Route path='/explanation' element={<ExplanationPage/>} />
+            <Route path='/setting' element={<Setting/>} />
+            <Route path='/password' element={<Password/>} />
           </Routes>
         </Container>
       </LoginContext.Provider>
