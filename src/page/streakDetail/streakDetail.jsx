@@ -20,7 +20,6 @@ function StreakDetail() {
         alert("삭제된 일입니다!");
         navigate("/");
       }
-      console.log(data.data)
       if (data.data === null) {
         alert("로그인을 해 주세요");
         navigate("/login");  // 로그인 페이지로 이동
@@ -49,7 +48,6 @@ function StreakDetail() {
       alert("갱신되었습니다!")
       getWork(id);
     } catch(e){
-      console.log(e);
     }
   }
 
@@ -65,7 +63,6 @@ function StreakDetail() {
       alert("삭제되었습니다")
       navigate("/")
     } catch(e){
-      console.log(e);
     }
   }
 
@@ -74,11 +71,9 @@ function StreakDetail() {
       const data = await axios.post('http://localhost:8080/api/work/repair',{
         "id" : parseInt(id)
       })
-      console.log(data);
       alert("스트릭이 수리되었습니다!")
       getWork(id);
     } catch(e){
-      console.log(e);
     }
   }
 
@@ -87,11 +82,9 @@ function StreakDetail() {
       const data = await axios.post('http://localhost:8080/api/work/repair-buy',{
         "id" : parseInt(id)
       })
-      console.log(data);
       alert("구매가 완료되었습니다!")
       getWork(id);
     } catch(e){
-      console.log(e);
     }
   }
 

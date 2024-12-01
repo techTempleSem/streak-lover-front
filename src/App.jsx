@@ -4,18 +4,18 @@ import Login from "./page/login/login";
 import Streak from "./page/streakDetail/streakDetail";
 import Container from 'react-bootstrap/Container';
 import { Route, Routes } from 'react-router-dom';
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import StreakMain from "./page/streakMain/streakMain";
 import StreakDetail from "./page/streakDetail/streakDetail";
 import Register from "./page/register/register";
 import style from "./App.module.scss"
 import StreakRegister from "./page/streakRegister/streakRegister";
 import ExplanationPage from "page/explanationPage/explanationPage";
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
 import Setting from "./page/setting/setting";
 import Password from "page/password/password";
-// import { messaging } from './firebase';
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken } from "firebase/messaging";
+import { useCookies } from "react-cookie";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDHN-PdAwQaePOBreDNzgLDT8tTy4p3beY",
@@ -27,23 +27,14 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const firebaseToken = process.env.REACT_APP_FIREBASE_KEY;
 
 const requestPermission = async () => {
   try {
-    console.log("get message")
     const messaging = getMessaging(app); // 안전하게 초기화 후 가져옴
 
-    navigator.serviceWorker
-    .register('/firebase-messaging-sw.js')
-    .then((registration) => {
-      console.log('Service Worker registered successfully.');
-    })
-    .catch((error) => {
-      console.error('Service Worker registration failed:', error);
-    });
-
     await Notification.requestPermission();
-    const token = await getToken(messaging, { vapidKey: "BLBbeLXzxa8lidDhLc9x9hxpQoa7NnKolSKKDJxGRaDm2LPukgXPElGO1egwrF3rkyJBk9Qcwb9oZ3VlrM-8qxQ" });
+    const token = await getToken(messaging, { vapidKey: firebaseToken });
     console.log("FCM Token:", token);
     const data = await axios.post('http://localhost:8080/api/user/firebase-token',{
       "token": token
@@ -56,7 +47,10 @@ const requestPermission = async () => {
 const LoginContext = createContext(null);
 function App() {
   axios.defaults.withCredentials = true;
-  const [isLogin, setIsLogin] = useState("");
+  const [cookies, setCookie, removeCookie] = useCookies(["streak-user"]);
+  const [isLogin, setIsLogin] = useState(cookies["streak-user"]);
+  const [workCount, setWorkCount] = useState(0);
+  const [alertTime, setAlertTime] = useState(0);
 
   useEffect(() => {
     if(isLogin){
@@ -64,18 +58,20 @@ function App() {
     }
   },[isLogin])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const user = async () => {
       const data = await axios.get('http://localhost:8080/api/user/user')
+      setCookie("streak-user",data.data.name ?? "")
       setIsLogin(data.data.name ?? "");
-      console.log(data.data.name)
+      setWorkCount(data.data.work_count)
+      setAlertTime(data.data.alert_time)
     }
     user();
   }, [])
 
   return (
     <div>
-      <LoginContext.Provider value={{isLogin, setIsLogin}}>
+      <LoginContext.Provider value={{isLogin, setIsLogin, workCount, setWorkCount,alertTime, setAlertTime}}>
         <Header></Header>
         <Container className={style.content}>
           <Routes>

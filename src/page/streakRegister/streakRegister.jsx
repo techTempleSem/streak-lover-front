@@ -20,7 +20,6 @@ const StreakRegister = () => {
   });
 
   useEffect(() => {
-    console.log(id)
     let getData = async () => {
       try{
         const data = await axios.get(`http://localhost:8080/api/work/${id}`)
@@ -28,13 +27,11 @@ const StreakRegister = () => {
           alert("삭제된 일입니다!");
           navigate("/");
         }
-        console.log(data.data)
         if (data.data === null) {
           alert("로그인을 해 주세요");
           navigate("/login");  // 로그인 페이지로 이동
           return;
         }
-        console.log(data.data.body)
 
         let dayWeek = data.data.body.day_week;
         setTitle(data.data.body.name);
@@ -75,15 +72,18 @@ const StreakRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ title, description, selectedDays });
-    if(id){
-      const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selected_days: selectedDays, work_num : parseInt(id) })
-      alert("성공적으로 수정되었습니다!")
-    } else {
-      const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selected_days: selectedDays })
-      alert("성공적으로 등록되었습니다!")
+    try{
+      if(id){
+        const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selected_days: selectedDays, work_num : parseInt(id) })
+        alert("성공적으로 수정되었습니다!")
+      } else {
+        const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selected_days: selectedDays })
+        alert("성공적으로 등록되었습니다!")
+      }
+      navigate("/");
+    } catch(e){
+      alert(e.response.data.result.resultDescription)
     }
-    navigate("/");
   };
 
   return (

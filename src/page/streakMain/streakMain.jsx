@@ -5,17 +5,11 @@ import axios from "axios";
 import { Button, Card, Col, Container, ProgressBar, Row } from "react-bootstrap";
 import StreakCard from "../../components/streakCard/streakCard";
 import { useNavigate } from "react-router-dom";
-
-const tasks = [
-  { name: '운동', streakDays: 23 },
-  { name: '독서', streakDays: 15 },
-  { name: '코딩', streakDays: 7 },
-  { name: '명상', streakDays: 30 },
-  { name: '기상', streakDays: 10 },
-  { name: '글쓰기', streakDays: 5 },
-];
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { useAuth } from "App";
 
 function StreakMain() {
+  const {isLogin, workCount} = useAuth();
   const [works, setWorks] = useState([])
   const navigate = useNavigate();
 
@@ -39,7 +33,14 @@ function StreakMain() {
   }
 
   return (
-    <Container>
+    <Container className={style.mainContainer}>
+      {isLogin == false ? <></> :
+        <div className={style.availableSchedules}>
+          <FaRegCalendarAlt className={style.scheduleIcon} />
+          <span className={style.text}>현재 등록 가능한 일정 : </span>
+          <span className={`${style.count} ${workCount - works.length == 0 ? style.unavailable : style.available }`}>{workCount - works.length}</span>
+        </div>
+      }
       <Row>
         {works.length == 0 ? 
         <p>NO WORKS</p> : 
@@ -56,7 +57,7 @@ function StreakMain() {
           </Col>
         ))}
       </Row>
-      <button className={style.addStreakButton} onClick={addStreak}>+ Add Streak</button>
+      <button className={style.addStreakButton} onClick={addStreak} disabled={workCount - works.length == 0}>+ Add Streak</button>
     </Container>
   );
 }

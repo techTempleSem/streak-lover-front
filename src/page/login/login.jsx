@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../App";
 import style from "./login.module.scss"
+import { useCookies } from "react-cookie";
 
 function Login() {
-  const {isLogin, setIsLogin} = useAuth();
+  const {isLogin, setIsLogin, setWorkCount, setAlertTime} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["streak-user"]);
 
   const login = async (event) => {
     event.preventDefault(); // 페이지 리로드 방지
@@ -20,8 +22,12 @@ function Login() {
       "password" : password
     })
 
-    if(data.data == 'YES') {
+
+    if(data.data.result.resultCode == 200) {
+      setCookie("streak-user",email)
       setIsLogin(email);
+      setWorkCount(data.data.body.work_count)
+      setAlertTime(data.data.body.alert_time)
       navigate("/")
     }
   };

@@ -1,6 +1,12 @@
-.loginContext{
-    font-family: din-round;
-    .form{
-        margin-bottom: 20px;
+.settings {
+    display: flex;
+    height: 100vh;
+    margin-top: -4px;
+  
+    .settingsContent {
+      flex-grow: 1;
+      padding: 20px;
+      background: #ffffff;
     }
-}
+  }
+  
