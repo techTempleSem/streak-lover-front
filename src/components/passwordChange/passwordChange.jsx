@@ -10,6 +10,8 @@ import axios from 'axios';
 import { ButtonGroup, Col, Row, Form } from 'react-bootstrap';
 import style from "./passwordChange.module.scss"
 
+const api = process.env.REACT_APP_API
+
 const PasswordChange  = ({}) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -20,7 +22,7 @@ const PasswordChange  = ({}) => {
     event.preventDefault(); // 페이지 리로드 방지
 
     try{
-      const data = await axios.post('http://localhost:8080/api/user/change',{
+      const data = await axios.post(`${api}/api/user/change`,{
         "current_password" : currentPassword,
         "new_password" : newPassword,
         "confirm_password": confirmPassword

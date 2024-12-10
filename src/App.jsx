@@ -28,6 +28,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const firebaseToken = process.env.REACT_APP_FIREBASE_KEY;
+const api = process.env.REACT_APP_API
 
 const requestPermission = async () => {
   try {
@@ -36,7 +37,7 @@ const requestPermission = async () => {
     await Notification.requestPermission();
     const token = await getToken(messaging, { vapidKey: firebaseToken });
     console.log("FCM Token:", token);
-    const data = await axios.post('http://localhost:8080/api/user/firebase-token',{
+    const data = await axios.post(`${api}/api/user/firebase-token`,{
       "token": token
     })
   } catch (error) {
@@ -60,7 +61,7 @@ function App() {
 
   useLayoutEffect(() => {
     const user = async () => {
-      const data = await axios.get('http://localhost:8080/api/user/user')
+      const data = await axios.get(`${api}/api/user/user`)
       setCookie("streak-user",data.data.name ?? "")
       setIsLogin(data.data.name ?? "");
       setWorkCount(data.data.work_count)

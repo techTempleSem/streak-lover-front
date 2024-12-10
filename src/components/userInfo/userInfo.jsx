@@ -5,6 +5,8 @@ import { Form } from 'react-bootstrap';
 import { useAuth } from 'App';
 import axios from "axios";
 
+const api = process.env.REACT_APP_API
+
 const UserInfo  = ({}) => {
   const {workCount, alertTime} = useAuth();
   const [notificationTime, setNotificationTime] = useState(alertTime);
@@ -15,14 +17,14 @@ const UserInfo  = ({}) => {
 
   async function setAlertTime(){
     console.log(notificationTime)
-    const data = await axios.post('http://localhost:8080/api/user/alert-time',{
+    const data = await axios.post(`${api}/api/user/alert-time`,{
       "alert_time" : notificationTime,
     })
     console.log(data);
     alert(data.data.body)
   }
 
-  const timeOptions = [];
+  const timeOptions = ["알림 안씀"];
   for (let hour = 0; hour < 24; hour++) {
     ["00", "30"].forEach((minute) => {
       const time = `${String(hour).padStart(2, "0")}:${minute}`;

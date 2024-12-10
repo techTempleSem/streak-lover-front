@@ -18,7 +18,7 @@ function getDayBlocks(rowNum, streakData) {
     const dayIndex = (width - i - 1) * 7 + rowNum;
     const contributionLevel = streakData[dayIndex]?.level || 0; // mock contribution level
 
-    const today = new Date(new Date() - dayIndex*24*60*60*1000);
+    const today = new Date(new Date() - (dayIndex - (6 - new Date().getDay()))*24*60*60*1000);
     const year = today.getFullYear();
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');

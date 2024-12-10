@@ -5,6 +5,8 @@ import { Form } from 'react-bootstrap';
 import { useAuth } from 'App';
 import axios from "axios";
 
+const api = process.env.REACT_APP_API
+
 const Inquiry   = ({}) => {
   const [title, setTitle] = useState("");
   const [context, setContext] = useState("");
@@ -12,11 +14,13 @@ const Inquiry   = ({}) => {
   async function sendEmail(event){
     event.preventDefault(); // 페이지 리로드 방지
     console.log(event)
-    const data = await axios.post('http://localhost:8080/api/mail/inquiry',{
+    const data = await axios.post(`${api}/api/mail/inquiry`,{
       title : title,
       context : context
     });
     console.log(data)
+    if(data.status == 200)
+      alert("전송되었습니다. 메일로 답변 드리겠습니다!")
   }
   return (
     <div className={style.inquiryContainer}>

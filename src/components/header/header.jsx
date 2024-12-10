@@ -10,6 +10,8 @@ import axios from 'axios';
 import { ButtonGroup } from 'react-bootstrap';
 import style from "./header.module.scss"
 
+const api = process.env.REACT_APP_API
+
 function Header() {
   const {isLogin, setIsLogin} = useAuth();
   const [expanded, setExpanded] = useState(false);
@@ -50,7 +52,7 @@ function Header() {
   }
 
   async function logout(){
-    const data = await axios.get('http://localhost:8080/api/user/logout')
+    const data = await axios.get(`${api}/api/user/logout`)
     alert("로그아웃 되었습니다!")
     setIsLogin("");
     navigate("/");

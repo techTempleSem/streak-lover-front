@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { useAuth } from "App";
 
+const api = process.env.REACT_APP_API
+
 function StreakMain() {
   const {isLogin, workCount} = useAuth();
   const [works, setWorks] = useState([])
@@ -15,14 +17,14 @@ function StreakMain() {
 
   useEffect(() => {
     const getWork = async ()=>{
-      const data = await axios.get('http://localhost:8080/api/user/work')
+      const data = await axios.get(`${api}/api/user/work`)
       setWorks(data.data);
     }
     getWork()
   }, [])
 
   async function extend(id){
-    const data = await axios.post('http://localhost:8080/api/work/extend',{
+    const data = await axios.post(`${api}/api/work/extend`,{
       "id": id
     })
     setWorks(data.data);

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../App";
 import style from "./register.module.scss"
 
+const api = process.env.REACT_APP_API
+
 function Register() {
   const {isLogin, setIsLogin} = useAuth();
   const [email, setEmail] = useState('');
@@ -21,7 +23,7 @@ function Register() {
       return;
     }
 
-    const data = await axios.post('http://localhost:8080/open-api/user/register',{
+    const data = await axios.post(`${api}/open-api/user/register`,{
       "name" : email,
       "password" : password
     })
@@ -34,7 +36,7 @@ function Register() {
   };
 
   async function getCode(){
-    const data = await axios.post('http://localhost:8080/open-api/mail/register',{
+    const data = await axios.post(`${api}/open-api/mail/register`,{
       "email" : email,
       "type" : "email"
     })
@@ -42,7 +44,7 @@ function Register() {
   }
 
   async function getAuth(){
-    const data = await axios.post('http://localhost:8080/open-api/mail/auth',{
+    const data = await axios.post(`${api}/open-api/mail/auth`,{
       "email" : email,
       "code" : emailCheck
     })

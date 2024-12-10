@@ -7,6 +7,8 @@ import { useAuth } from "../../App";
 import style from "./login.module.scss"
 import { useCookies } from "react-cookie";
 
+const api = process.env.REACT_APP_API
+
 function Login() {
   const {isLogin, setIsLogin, setWorkCount, setAlertTime} = useAuth();
   const [email, setEmail] = useState('');
@@ -17,7 +19,7 @@ function Login() {
   const login = async (event) => {
     event.preventDefault(); // 페이지 리로드 방지
 
-    const data = await axios.post('http://localhost:8080/open-api/user/login',{
+    const data = await axios.post(`${api}/open-api/user/login`,{
       "name" : email,
       "password" : password
     })

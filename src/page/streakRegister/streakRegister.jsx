@@ -4,6 +4,8 @@ import style from './streakRegister.module.scss';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 
+const api = process.env.REACT_APP_API
+
 const StreakRegister = () => {
   const navigate = useNavigate();
   const {id} = useParams();
@@ -22,7 +24,7 @@ const StreakRegister = () => {
   useEffect(() => {
     let getData = async () => {
       try{
-        const data = await axios.get(`http://localhost:8080/api/work/${id}`)
+        const data = await axios.get(`${api}/api/work/${id}`)
         if(data.data.state == "DELETE") {
           alert("삭제된 일입니다!");
           navigate("/");
@@ -56,7 +58,7 @@ const StreakRegister = () => {
 
   useEffect(() => {
     const user = async () => {
-      const data = await axios.get('http://localhost:8080/api/user/user')
+      const data = await axios.get(`${api}/api/user/user`)
       if(data.data.name == null) {
         alert("로그인을 진행해 주세요");
         navigate("/login")
@@ -74,10 +76,10 @@ const StreakRegister = () => {
     e.preventDefault();
     try{
       if(id){
-        const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selected_days: selectedDays, work_num : parseInt(id) })
+        const data = await axios.post(`${api}/api/work/register`,{ title, description, selected_days: selectedDays, work_num : parseInt(id) })
         alert("성공적으로 수정되었습니다!")
       } else {
-        const data = await axios.post('http://localhost:8080/api/work/register',{ title, description, selected_days: selectedDays })
+        const data = await axios.post(`${api}/api/work/register`,{ title, description, selected_days: selectedDays })
         alert("성공적으로 등록되었습니다!")
       }
       navigate("/");

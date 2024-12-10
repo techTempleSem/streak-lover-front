@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../App";
 import style from "./password.module.scss"
 
+const api = process.env.REACT_APP_API
+
 function Password() {
   const {isLogin, setIsLogin} = useAuth();
   const [email, setEmail] = useState('');
@@ -13,7 +15,7 @@ function Password() {
   const navigate = useNavigate();
 
   async function getCode(){
-    const data = await axios.post('http://localhost:8080/open-api/user/password-reset',{
+    const data = await axios.post(`${api}/open-api/user/password-reset`,{
       "email" : email,
     })
     alert("인증 코드가 전송되었습니다!");

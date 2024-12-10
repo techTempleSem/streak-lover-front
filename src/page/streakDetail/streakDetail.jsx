@@ -7,6 +7,8 @@ import { Button, ButtonGroup, Container } from "react-bootstrap";
 import { calcStreak, isExpend } from "utils";
 import { useAuth } from "App";
 
+const api = process.env.REACT_APP_API
+
 function StreakDetail() {
   const [work, setWorks] = useState(null);
   const {id} = useParams();
@@ -15,7 +17,7 @@ function StreakDetail() {
 
   async function getWork (id){
     try{
-      const data = await axios.get(`http://localhost:8080/api/work/${id}`)
+      const data = await axios.get(`${api}/api/work/${id}`)
       if(data.data.state == "DELETE") {
         alert("삭제된 일입니다!");
         navigate("/");
@@ -42,7 +44,7 @@ function StreakDetail() {
 
   async function extendStreak(){
     try{
-      const data = await axios.post('http://localhost:8080/api/work/extend',{
+      const data = await axios.post(`${api}/api/work/extend`,{
         "id": parseInt(id)
       })
       alert("갱신되었습니다!")
@@ -57,7 +59,7 @@ function StreakDetail() {
 
   async function deleteStreak(){
     try{
-      const data = await axios.post('http://localhost:8080/api/work/delete',{
+      const data = await axios.post(`${api}/api/work/delete`,{
         "id" : parseInt(id)
       })
       alert("삭제되었습니다")
@@ -68,7 +70,7 @@ function StreakDetail() {
 
   async function repair(){
     try{
-      const data = await axios.post('http://localhost:8080/api/work/repair',{
+      const data = await axios.post(`${api}/api/work/repair`,{
         "id" : parseInt(id)
       })
       alert("스트릭이 수리되었습니다!")
@@ -79,7 +81,7 @@ function StreakDetail() {
 
   async function repairBuy(){
     try{
-      const data = await axios.post('http://localhost:8080/api/work/repair-buy',{
+      const data = await axios.post(`${api}/api/work/repair-buy`,{
         "id" : parseInt(id)
       })
       alert("구매가 완료되었습니다!")

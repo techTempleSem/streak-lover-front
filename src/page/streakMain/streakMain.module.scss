@@ -1,6 +1,6 @@
 .mainContainer{
     .availableSchedules{
-        font-family: din-round;
+        font-family: "Merriweather Sans", sans-serif;
         background: linear-gradient(90deg, #f8f9fa, #ffffff); /* subtle gradient */
         padding: 10px 20px;
         border-bottom: 2px solid #e9ecef; /* 경계선 강조 */
@@ -34,7 +34,7 @@
         }
     }
     .addStreakButton {
-        font-family: din-round;
+        font-family: "Merriweather Sans", sans-serif;
         position: fixed;
         bottom: 20px;
         right: 20px;
