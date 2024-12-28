@@ -99,7 +99,7 @@ function StreakDetail() {
           <p className={style.streakDescription}>{work.descript}</p>
           <div className={style.streakCount}>🔥 {calcStreak(work.last_updated_at, work.cur_streak, work.day_week)}일 연속</div>
           <div className={style.streakCount}>💰 코인: {work.money}</div>
-          <div className={style.streakCount}>🛠️ 스트릭 리페어: {work.repair}</div>
+          <div className={style.streakCount}>🛠️ 스트릭 리페어(1500 코인): {work.repair}</div>
 
           <StreakContainer streaks={work.streak} dayWeek={work.day_week}></StreakContainer>
           <ButtonGroup aria-label="Basic example">
@@ -113,7 +113,7 @@ function StreakDetail() {
             </button>
           </div>
           <div className={style.repairSection}>
-            <button className={style.repairPurchaseBtn} onClick={repairBuy} disabled={work.money<3000}>
+            <button className={style.repairPurchaseBtn} onClick={repairBuy} disabled={work.money<1500}>
               💳 스트릭 리페어 구매
             </button>
           </div>
