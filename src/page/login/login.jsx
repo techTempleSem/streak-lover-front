@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../App";
 import style from "./login.module.scss"
 import { useCookies } from "react-cookie";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const api = process.env.REACT_APP_API
 
@@ -15,6 +16,8 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(["streak-user"]);
+  
+  // const provider = new GoogleAuthProvider();
 
   const login = async (event) => {
     event.preventDefault(); // 페이지 리로드 방지
@@ -31,6 +34,31 @@ function Login() {
       setWorkCount(data.data.body.work_count)
       setAlertTime(data.data.body.alert_time)
       navigate("/")
+    }
+  };
+
+  const gmailLogin = async (event) => {
+    try{
+      const auth = getAuth();
+      const userCred = await signInWithPopup(auth, new GoogleAuthProvider());
+      const user = userCred.user;
+      const idToken = await user.getIdToken();
+      console.log("ID Token:", idToken);
+      console.log(userCred)
+      const data = await axios.post(`${api}/open-api/user/gmail-login`,{
+        "name" : user.email,
+        "id_token" : idToken
+      })
+
+      if(data.data.result.resultCode == 200) {
+        setCookie("streak-user",user.email)
+        setIsLogin(user.email);
+        setWorkCount(data.data.body.work_count)
+        setAlertTime(data.data.body.alert_time)
+        navigate("/")
+      }
+    } catch(e) {
+      console.log(e)
     }
   };
 
@@ -62,9 +90,10 @@ function Login() {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100 mt-3">
+            <button type="submit" className={`${style.loginButton}`}>
               로그인
-            </Button>
+            </button>
+            <img onClick={gmailLogin} src="web_light_rd_SI.svg" alt="My Happy SVG" className={`${style.loginButton} ${style.gmail}`}/>
             <div className={style.password}>
               <a href="/password">비밀번호을 잊었나요?</a>
             </div>

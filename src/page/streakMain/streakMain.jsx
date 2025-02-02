@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import StreakContainer from "../../components/streakContainer/streakContainer";
 import style from "./streakMain.module.scss"
 import axios from "axios";
 import { Button, Card, Col, Container, ProgressBar, Row } from "react-bootstrap";
-import StreakCard from "../../components/streakCard/streakCard";
+// import StreakCard from "../../components/streakCard/streakCard";
 import { useNavigate } from "react-router-dom";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { useAuth } from "App";
+
+const StreakCard = React.lazy(() => import('components/streakCard/streakCard'));
 
 const api = process.env.REACT_APP_API
 

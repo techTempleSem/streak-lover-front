@@ -23,7 +23,11 @@
     .streakDescription {
         font-size: 0.9em;
         color: #7d7d7d;
-        margin-bottom: 25px;
+        margin-bottom: 0;
+    }
+    .badgeContainer{
+        display: flex;
+        justify-content: center;
     }
     .streakCount {
         font-size: 1.2em; /* 글씨 크기 조정 */
